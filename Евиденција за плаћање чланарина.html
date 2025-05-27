@@ -1,0 +1,505 @@
+<!DOCTYPE html>  
+<html lang="sr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Евиденција за плаћање чланарина</title>
+
+    <style>
+        /* Основни стилови */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: white;
+            background-image: url('file:///C:/Users/Lenovo/Downloads/background.png');
+            background-size: 1410px 728px;
+        }
+
+        /* Мобилни телефон */
+        @media screen and (max-width:560px) {
+        section {
+            width: 100%;
+        }
+
+table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+       }
+
+        /* Таблет */
+        @media screen and (min-width:560px) and (max-width:999px) {
+        section {
+            width: 70%;
+            margin:auto;
+        }
+       }
+
+        /* Рачунар */
+        @media screen and (min-width:1000px) {
+        section {
+            width: 40%;
+            margin:auto;
+        }
+       }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            cursor: context-menu;
+        }
+        h2 {
+            cursor: context-menu; text-align:center;
+        }
+        /* Стилизaција форме и табеле */
+        form {
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            width: 260px;
+        }
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        select,
+        button {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-color: white;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path fill="none" stroke="black" stroke-width="2" d="M2 5l6 6 6-6"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 12px;
+        }
+        select::-ms-expand {
+            display: none;
+        }
+        input {
+            width: 93.3%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+            width: 260px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        /* Стилизaција табеле */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+            cursor: context-menu;
+        }
+        td.payment-cell {
+            cursor: pointer;
+        }
+        .dugme {
+            background-color: #EEF4F8; color:#0056b3; font-weight: bold;
+        }
+        .dugme:hover {
+            background-color: #D3DDE6;
+        }
+        .mi {
+            background-color: red;
+    width: 180px;
+    margin-top:11.6px; position:fixed; right:30px;
+        }
+        .mi:hover {
+            background-color: #C00000; margin-bottom:20px;
+        }
+        /* Popup за приказ датума плаћања */
+        #popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        #popup.active {
+            display: block;
+        }
+        /* Стил за popup за додавање чланарине */
+        #addPaymentPopup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+            z-index: 1000;
+        }
+        #addPaymentPopup .popup-content {
+            max-width: 300px; max-height:320px; 
+        }
+        /* Бела боја текста */
+        .red-text {
+            color: white;
+            font-size: 2px;
+        }
+        .member-name {
+            cursor: pointer;
+        }
+        .dropdown-item {
+            display: none;
+        }
+        /* Уклањање стрелица у бројчаним поља */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+        input[type=number] {
+          -moz-appearance: textfield;
+        }
+
+        .dugmi {
+          width: 155px; margin-top:30px; font-weight: bold; background-color:#77B76E; position:fixed; right:225px;
+        }
+
+        .close {
+          width: 50px; margin-left:269px; top:-390px; position:relative; font-size:24px; color:#AAA9AC; background-color:transparent; border:none;
+        }
+
+button.close:hover {
+  background-color: transparent; color:#98979B;
+  }
+
+button.dugmi:hover {
+  background-color: green;
+  }
+
+td {
+  background-color: white;
+  }
+
+    </style>
+</head>
+<body>
+    <h1 id="pageTitle">Евиденција за плаћање чланарина</h1>
+
+    <!-- Форма за одабир секције -->
+    <form style="margin-left:-15px;" class="pocetna" id="sectionForm">
+        <label for="section">Ансамбл:</label>
+        <select id="section" name="section" required>
+            <option disabled selected class="dropdown-item" value="">Изабери...</option>
+            <option value="1">Школа фолклора</option>
+            <option value="2">Први пионирски ансамбл</option>
+            <option value="3">Други пионирски ансамбл</option>
+            <option value="4">Други ансамбл</option>
+            <option value="5">Први ансамбл</option>
+            <option value="6">Повратници</option>
+            <option value="7">Ветерани</option>
+        </select>
+        <button class="dugme" type="submit" id="openButton" disabled>Отвори</button>
+    </form>
+
+    <!-- Овде ће бити приказана табела и дугме за додавање плаћања -->
+    <div id="sectionDetails"></div>
+
+    <!-- Popup за приказ датума плаћања (при клику на ћелију табеле) -->
+    <div id="popup">
+        <span id="popupContent"></span>
+    </div>
+
+    <!-- Popup за додавање чланарине -->
+    <div id="addPaymentPopup">
+        <div class="popup-content">
+            <h2>Додавање чланарина</h2>
+            <form style="margin-left:5px;" id="addPaymentForm">
+                <label for="memberNamePopup">Члан:</label>
+                <input type="text" id="memberNamePopup" name="memberName" required>
+                
+                <label for="paymentMonthPopup">Месец плаћања:</label>
+                <select id="paymentMonthPopup" name="paymentMonth" required>
+                    <option disabled selected class="dropdown-item" value="">Изабери...</option>
+                    <option value="jan">Јануар</option>
+                    <option value="feb">Фебруар</option>
+                    <option value="mar">Март</option>
+                    <option value="apr">Април</option>
+                    <option value="may">Мај</option>
+                    <option value="jun">Јун</option>
+                    <option value="jul">Јул</option>
+                    <option value="aug">Август</option>
+                    <option value="sep">Септембар</option>
+                    <option value="oct">Октобар</option>
+                    <option value="nov">Новембар</option>
+                    <option value="dec">Децембар</option>
+                </select>
+                
+                <label for="paymentAmountPopup">Износ плаћања (RSD):</label>
+                <input type="number" id="paymentAmountPopup" name="paymentAmount" min="0" oninput="ograničiDužinu(this, 4)" required>
+                
+                <br></br><button type="submit"><b>Додај плаћање</b></button>
+            </form>
+            <button class="close"><i onclick="obradiKlik.call(this)" id="closePopupButton" class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <br>
+    <button class="mi" id="clearDataButton"><i class="fas fa-trash-can"></i> &nbsp;<b>Обриши све податке</b></button>
+    <br>
+
+    <script>
+        // Глобална променљива за тренутну секцију
+        let currentSection = null;
+
+        // Омогућава повратак на почетак странице кликом на наслов
+        document.getElementById('pageTitle').addEventListener('click', function () {
+            window.scrollTo(0, 0);
+        });
+
+        // Омогућава дугме "Отвори" када је изабрана валидна опција у падајућем менију
+        document.getElementById('section').addEventListener('change', function (event) {
+            const openButton = document.getElementById('openButton');
+            openButton.disabled = event.target.value === '';
+        });
+
+        // Обрада форме за одабир секције
+        document.getElementById('sectionForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const sectionValue = document.getElementById('section').value;
+            currentSection = sectionValue;
+            showSectionDetails(sectionValue);
+        });
+
+        // Функција за приказ детаља о изабраној секцији
+        function showSectionDetails(sectionValue) {
+            const sectionDetailsDiv = document.getElementById('sectionDetails');
+            sectionDetailsDiv.innerHTML = '';
+            sectionDetailsDiv.style.display = 'block';
+
+            // Креирање табеле за чланове и плаћања
+            const table = document.createElement('table');
+
+            // Учитавање сачуваних података за изабрану секцију из localStorage
+            const savedData = JSON.parse(localStorage.getItem(`section_${sectionValue}`)) || [];
+
+            if (savedData.length === 0) {
+                const noDataText = document.createElement('p');
+                noDataText.textContent = '.';
+                noDataText.classList.add('red-text');
+                sectionDetailsDiv.appendChild(noDataText);
+            } else {
+                table.innerHTML = `
+                <tr>
+                    <th>Члан</th>
+                    <th>Јануар</th>
+                    <th>Фебруар</th>
+                    <th>Март</th>
+                    <th>Април</th>
+                    <th>Мај</th>
+                    <th>Јун</th>
+                    <th>Јул</th>
+                    <th>Август</th>
+                    <th>Септембар</th>
+                    <th>Октобар</th>
+                    <th>Новембар</th>
+                    <th>Децембар</th>
+                    <th>Измени</th>
+                    <th>Обриши</th>
+                </tr>`;
+                // Додавање чланова из сачуваних података у табелу
+                savedData.forEach(member => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+<td class="member-name">${member.name}</td>
+                        ${createPaymentCells(member)}
+<td><button style="background-color:white; color:black; width:50px; height:30px; font-family:gothambold; margin-top:-5px;" class="editButton"><i class="fas fa-edit" style="font-size:30px"></i></button></td>
+<td><button style="background-color:white; color:black; width:50px; height:30px; font-family:gothambold; margin-top:-5px;" class="deleteButton"><i class="fas fa-trash-alt" style="font-size:30px"></i></button></td>                        
+`;
+                    table.appendChild(row);
+                });
+                sectionDetailsDiv.appendChild(table);
+            }
+
+            // Додавање дугмета "Додај чланарину" испод табеле
+            const addPaymentBtn = document.createElement('button');
+            addPaymentBtn.innerHTML = '<i class="fas fa-plus-square"></i> &nbsp;Додај чланарину';
+            addPaymentBtn.className = 'dugmi';
+            addPaymentBtn.style.width = '155px';
+            addPaymentBtn.addEventListener('click', openAddPaymentPopup);
+            sectionDetailsDiv.appendChild(addPaymentBtn);
+
+            // Додавање догађаја за дугмета за брисање
+            document.querySelectorAll('.deleteButton').forEach((button, index) => {
+                button.addEventListener('click', function () {
+                    if (confirm("Да ли сте сигурни да желите да обришете овог члана?")) {
+                        deleteMember(sectionValue, index);
+                    }
+                });
+            });
+
+            // Додавање клика на име члана да попуни форму (у popup)
+            document.querySelectorAll('.member-name').forEach(cell => {
+                cell.addEventListener('click', function () {
+                    document.getElementById('memberNamePopup').value = cell.textContent;
+                });
+            });
+
+            // Додавање догађаја за дугме измене
+            document.querySelectorAll('.editButton').forEach(button => {
+                button.addEventListener('click', function () {
+                    const row = button.parentNode.parentNode;
+                    const name = row.querySelector('.member-name').textContent;
+                    editMember(name);
+                });
+            });
+        }
+
+        // Функција за креирање ћелија са плаћањима
+        function createPaymentCells(member) {
+            const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+            return months.map(month => {
+                const paymentDate = member[`${month}_date`];
+                const cellContent = member[month] ? member[month] : '';
+                const date = paymentDate ? new Date(paymentDate).toLocaleDateString('sr-RS') : '';
+                const cellClass = cellContent ? 'payment-cell' : '';
+                return `<td class="${cellClass}" data-date="${date}">${cellContent || '—'}</td>`;
+            }).join('');
+        }
+
+        // Функција за отварање popup-а за додавање плаћања
+        function openAddPaymentPopup() {
+            document.getElementById('addPaymentPopup').style.display = 'block';
+            document.getElementById('addPaymentForm').reset();
+        }
+
+        // Догађај за затварање popup-а за додавање плаћања
+        document.getElementById('closePopupButton').addEventListener('click', function () {
+            document.getElementById('addPaymentPopup').style.display = 'none';
+        });
+
+        // Обрада слања форме из popup-а за додавање плаћања
+        document.getElementById('addPaymentForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            addPayment(currentSection);
+            document.getElementById('addPaymentPopup').style.display = 'none';
+        });
+
+        // Функција за додавање чланарине
+        function addPayment(sectionValue) {
+            const memberName = document.getElementById('memberNamePopup').value;
+            const paymentMonth = document.getElementById('paymentMonthPopup').value;
+            const paymentAmount = document.getElementById('paymentAmountPopup').value;
+
+            // Учитавање сачуваних података за изабрану секцију
+            const savedData = JSON.parse(localStorage.getItem(`section_${sectionValue}`)) || [];
+
+            // Проверите да ли је члан већ постоји
+            let memberIndex = savedData.findIndex(member => member.name === memberName);
+
+            if (memberIndex === -1) {
+                const newMember = { name: memberName };
+                newMember[paymentMonth] = paymentAmount;
+                newMember[`${paymentMonth}_date`] = Date.now();
+                savedData.push(newMember);
+            } else {
+                savedData[memberIndex][paymentMonth] = paymentAmount;
+                savedData[memberIndex][`${paymentMonth}_date`] = Date.now();
+            }
+
+            localStorage.setItem(`section_${sectionValue}`, JSON.stringify(savedData));
+            refreshTable(sectionValue);
+        }
+
+        // Функција за освежавање приказа табеле
+        function refreshTable(sectionValue) {
+            showSectionDetails(sectionValue);
+        }
+
+        // Функција за брисање члана
+        function deleteMember(section, index) {
+            const data = JSON.parse(localStorage.getItem(`section_${section}`)) || [];
+            data.splice(index, 1);
+            localStorage.setItem(`section_${section}`, JSON.stringify(data));
+            showSectionDetails(section);
+        }
+
+        // Функција за измену имена члана
+        function editMember(name) {
+            const newName = prompt('Унесите ново име члана:', name);
+            if (newName === null || newName === '') {
+                alert('Морате унети валидно име члана.');
+                return;
+            }
+            const sectionValue = document.getElementById('section').value;
+            const savedData = JSON.parse(localStorage.getItem(`section_${sectionValue}`)) || [];
+            const memberIndex = savedData.findIndex(member => member.name === name);
+
+            if (memberIndex !== -1) {
+                savedData[memberIndex].name = newName;
+                localStorage.setItem(`section_${sectionValue}`, JSON.stringify(savedData));
+                refreshTable(sectionValue);
+            } else {
+                alert('Члан није пронађен.');
+            }
+        }
+
+        // Функција за брисање свих података
+        function clearSavedData() {
+            localStorage.clear();
+            window.location.reload();
+        }
+        document.getElementById('clearDataButton').addEventListener('click', clearSavedData);
+
+        // Догађај за приказ popup-а са датумом плаћања (при клику на ћелију табеле)
+        document.body.addEventListener('click', function (event) {
+            if (event.target.tagName === 'TD' && event.target.classList.contains('payment-cell')) {
+                const popup = document.getElementById('popup');
+                const popupContent = document.getElementById('popupContent');
+                popupContent.textContent = `Датум: ${event.target.dataset.date}`;
+                popup.classList.add('active');
+            } else if (!event.target.closest('#popup')) {
+                document.getElementById('popup').classList.remove('active');
+            }
+        });
+
+        // Функција за ограничење дужине уноса
+        function ograničiDužinu(input, maxDuzina) {
+            if (input.value.length > maxDuzina) {
+                input.value = input.value.slice(0, maxDuzina);
+            }
+        }
+    </script>
+</body>
+</html>
