@@ -32,11 +32,8 @@ table {
 h1 { font-size:22px;
        }
 
-.pocetna { position: relative;
-      top: 15%;
-      left: 16%;
+.pocetne { display: flex; justify-content: center;
        }
-
 }
 
         /* Таблет */
@@ -226,6 +223,7 @@ td {
 <body>
     <h1 id="pageTitle">Евиденција за плаћање чланарина</h1>
 
+<div class="pocetne">
     <!-- Форма за одабир секције -->
     <form style="margin-left:-15px;" class="pocetna" id="sectionForm">
         <label for="section">Ансамбл:</label>
@@ -241,6 +239,8 @@ td {
         </select>
         <button class="dugme" type="submit" id="openButton" disabled>Отвори</button>
     </form>
+</div>
+
 
     <!-- Овде ће бити приказана табела и дугме за додавање плаћања -->
     <div id="sectionDetails"></div>
