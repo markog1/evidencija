@@ -35,8 +35,9 @@ h1 { font-size:22px;
 .pocetne { display: flex; justify-content: center;
        }
 
-.dugmi {margin-right: 10px;
-       }
+.dugmi {
+    margin-right: 10px;
+}
 
 .mi {margin-right: 10px;
        }
@@ -295,6 +296,38 @@ td {
     <br>
 
     <script>
+
+// Popup forma za dodavanje plaćanja
+const addPaymentForm = document.getElementById("addPaymentForm");
+
+addPaymentForm.addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  // Prikupljanje podataka iz forme
+  const formData = new FormData(addPaymentForm);
+
+  // Slanje podataka na tvoj Google Apps Script webhook URL
+  fetch("https://script.google.com/macros/s/AKfycbx7jR2_mSvZcPnxrRjoDYpoWnCtvL50NT4bbdGay3gLrE4WyFPMKuy88zHgVECl96Ei/exec", {
+    method: "POST",
+    body: formData
+  })
+  .then(response => response.text())
+  .then(text => {
+    alert("Uspešno!");
+    // Ovde možeš dodati i zatvaranje popup-a nakon uspeha, npr:
+    document.getElementById('addPaymentPopup').style.display = 'none';
+    addPaymentForm.reset();
+  })
+  .catch(err => alert("Greška pri slanju: " + err));
+});
+
+// Dodatno: Omogući otvaranje popup-a (na primer klikom na dugme - moraš imati dugme za to)
+// I zatvaranje popup-a, na primer:
+document.querySelector("#closePopupButton").addEventListener("click", function() {
+  document.getElementById('addPaymentPopup').style.display = 'none';
+});
+
+
         // Глобална променљива за тренутну секцију
         let currentSection = null;
 
@@ -518,3 +551,4 @@ td {
     </script>
 </body>
 </html>
+
