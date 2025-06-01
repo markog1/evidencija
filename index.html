@@ -296,36 +296,6 @@ td {
     <br>
 
     <script>
-
-const scriptUrl = "https://script.google.com/macros/s/AKfycbx7jR2_mSvZcPnxrRjoDYpoWnCtvL50NT4bbdGay3gLrE4WyFPMKuy88zHgVECl96Ei/exec";
-
-    document.getElementById("addPaymentForm").addEventListener("submit", function(event) {
-      event.preventDefault();
-
-      const data = {
-        section: document.getElementById("section").value,
-        memberName: document.getElementById("memberName").value,
-        paymentMonth: document.getElementById("paymentMonth").value,
-        paymentAmount: document.getElementById("paymentAmount").value,
-      };
-
-      fetch(scriptUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      })
-      .then(response => response.text())
-      .then(text => {
-        document.getElementById("result").textContent = text;
-      })
-      .catch(error => {
-        document.getElementById("result").textContent = "Greška: " + error;
-      });
-    });
-
-
         // Глобална променљива за тренутну секцију
         let currentSection = null;
 
