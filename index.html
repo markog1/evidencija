@@ -314,7 +314,12 @@ document.getElementById("paymentForm").addEventListener("submit", function(event
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify({
+    section: "Prva sekcija",
+    memberName: "Marko",
+    paymentMonth: "Maj",
+    paymentAmount: "1000"
+  })
     })
     .then(response => response.text())
     .then(text => alert("Uspešno poslato: " + text))
