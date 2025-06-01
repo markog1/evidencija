@@ -297,34 +297,33 @@ td {
 
     <script>
 
-document.getElementById("paymentForm").addEventListener("submit", function(event) {
-    event.preventDefault();
+const scriptUrl = "https://script.google.com/macros/s/AKfycbx7jR2_mSvZcPnxrRjoDYpoWnCtvL50NT4bbdGay3gLrE4WyFPMKuy88zHgVECl96Ei/exec";
 
-    const form = event.target;
+    document.getElementById("dataForm").addEventListener("submit", function(event) {
+      event.preventDefault();
 
-    const data = {
-      section: form.section.value,
-      memberName: form.memberName.value,
-      paymentMonth: form.paymentMonth.value,
-      paymentAmount: form.paymentAmount.value
-    };
+      const data = {
+        section: document.getElementById("section").value,
+        memberName: document.getElementById("memberName").value,
+        paymentMonth: document.getElementById("paymentMonth").value,
+        paymentAmount: document.getElementById("paymentAmount").value,
+      };
 
-    fetch("https://script.google.com/macros/s/AKfycbx7jR2_mSvZcPnxrRjoDYpoWnCtvL50NT4bbdGay3gLrE4WyFPMKuy88zHgVECl96Ei/exec", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-    section: "Prva sekcija",
-    memberName: "Marko",
-    paymentMonth: "Maj",
-    paymentAmount: "1000"
-  })
-    })
-    .then(response => response.text())
-    .then(text => alert("Uspešno poslato: " + text))
-    .catch(error => alert("Greška: " + error));
-  });
+      fetch(scriptUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.text())
+      .then(text => {
+        document.getElementById("result").textContent = text;
+      })
+      .catch(error => {
+        document.getElementById("result").textContent = "Greška: " + error;
+      });
+    });
 
 
         // Глобална променљива за тренутну секцију
